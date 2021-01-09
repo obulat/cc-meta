@@ -1,0 +1,52 @@
+[tool.briefcase]
+project_name = "Metadata Generator"
+bundle = "com.obulat"
+version = "0.0.1"
+url = "https://obulat.com/metadatagenerator"
+license = "MIT license"
+author = 'Olga Bulat'
+author_email = "obulat@gmail.com"
+
+[tool.briefcase.app.metadatagenerator]
+formal_name = "Metadata Generator"
+description = "Save your CC-licensed work metadata as a qr code or xmp file"
+icon = "src/metadatagenerator/resources/metadatagenerator"
+sources = ['src/metadatagenerator']
+requires = [
+    'qrcode',
+    'jinja2'
+]
+
+
+[tool.briefcase.app.metadatagenerator.macOS]
+requires = [
+    'toga-cocoa>=0.3.0.dev20',
+]
+
+[tool.briefcase.app.metadatagenerator.linux]
+requires = [
+    'toga-gtk>=0.3.0.dev20',
+]
+system_requires = [
+    'libgirepository1.0-dev',
+    'libcairo2-dev',
+    'libpango1.0-dev',
+    'libwebkitgtk-3.0-0',
+    'gir1.2-webkit-3.0',
+]
+
+[tool.briefcase.app.metadatagenerator.windows]
+requires = [
+    'toga-winforms>=0.3.0.dev20',
+]
+
+# Mobile deployments
+[tool.briefcase.app.metadatagenerator.iOS]
+requires = [
+    'toga-iOS>=0.3.0.dev20',
+]
+
+[tool.briefcase.app.metadatagenerator.android]
+requires = [
+    'toga-android>=0.3.0.dev20',
+]

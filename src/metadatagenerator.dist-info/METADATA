@@ -1,0 +1,10 @@
+Metadata-Version: 2.1
+Briefcase-Version: 0.3.4
+Name: metadatagenerator
+Formal-Name: Metadata Generator
+App-ID: com.obulat.metadatagenerator
+Version: 0.0.1
+Home-page: https://obulat.com/metadatagenerator
+Author: Olga Bulat
+Author-email: obulat@gmail.com
+Summary: Save your CC-licensed work metadata as a qr code or xmp file
