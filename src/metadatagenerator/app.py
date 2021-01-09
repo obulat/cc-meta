@@ -12,7 +12,6 @@ from toga.style import Pack
 from toga.style.pack import COLUMN, ROW, CENTER
 
 
-
 xmp_template = """{%- set COPYRIGHTED = 'CC0' not in license -%}
 <?xpacket begin='' id='W5M0MpCehiHzreSzNTczkc9d'?>
 <x:xmpmeta xmlns:x='adobe:ns:meta/'>
@@ -26,10 +25,10 @@ xmp_template = """{%- set COPYRIGHTED = 'CC0' not in license -%}
         >
         <rdf:Description rdf:about=''>
             <xapRights:Marked>{{'True' if COPYRIGHTED else 'False'}}</xapRights:Marked>
-            {% if creator_of_work %}
+            {% if creator %}
             <xapRights:Owner>
                 <rdf:Bag>
-                    <rdf:li>{{ creator_of_work }}</rdf:li>
+                    <rdf:li>{{ creator }}</rdf:li>
                 </rdf:Bag>
             </xapRights:Owner>
             {%- endif -%}
@@ -43,8 +42,8 @@ xmp_template = """{%- set COPYRIGHTED = 'CC0' not in license -%}
                 </rdf:Alt>
             </xapRights:UsageTerms>
             <cc:license rdf:resource='{{ license_url }}'/>
-            {%- if creator_of_work -%}
-                <cc:attributionName>{{creator_of_work}}</cc:attributionName>
+            {%- if creator -%}
+                <cc:attributionName>{{creator}}</cc:attributionName>
             {% endif %}
             <dc:title>
                 <rdf:Alt>
@@ -99,18 +98,19 @@ class SelectedLicense:
     def __init__(self):
         self.license = 'CC0 1.0'
         self.title_of_work = ''
-        self.creator_of_work = ''
+        self.creator = ''
         self.link_to_work = ''
         self.link_to_creator_profile = ''
         self._qr = None
 
     def creator_html(self):
-        if not self.creator_of_work:
+        if not self.creator:
             return ''
         if self.link_to_creator_profile:
-            creator = f'by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="{self.link_to_creator_profile}">{self.creator_of_work}</a>'
+            creator = f' by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="{self.link_to_creator_profile}">{self.creator}</a>'
         else:
-            creator = f'by <span property="cc:attributionName">{self.creator_of_work}</span>'
+            creator = f' by <span property="cc:attributionName">{self.creator}</span>'
+        print('Will return creator: ', creator)
         return creator
 
     def work_html(self):
@@ -125,6 +125,7 @@ class SelectedLicense:
     def update(self, data: Dict):
         """ Update selected license data:
         """
+        print(f"Updating {data}")
         self.__setattr__(data['id'], data['value'])
     
     @property
@@ -139,7 +140,7 @@ class SelectedLicense:
             license=self.license,
             license_full=LICENSES[self.license]['FULL'],
             title_of_work=self.title_of_work,
-            creator_of_work=self.creator_of_work,
+            creator=self.creator,
             link_to_work=self.link_to_work,
             link_to_creator_profile=self.link_to_creator_profile,
             license_url=LICENSES[self.license]['URL'] if self.license else '',
@@ -311,11 +312,11 @@ class MetadataGenerator(toga.App):
         return results_pane
     
     def attribution_pane(self):
-        self.license_text = toga.Label(text="Your selected license")
+        self.license_text = toga.Label(text="Your selected license", style=Pack(flex=1))
         self.attribution_text = toga.MultilineTextInput(
             initial="No license selected",
             readonly=True,
-            style=Pack(height=40, padding_top=10)
+            style=Pack(height=50, padding_top=10)
             )
 
         return toga.Box(
